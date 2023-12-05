@@ -99,8 +99,6 @@ def prepare_seeds(seeds):
 
 if "2" in PART:
     # print(seeds, prepare_seeds(seeds), sep='\n'); exit()
-
-
     # loc = {}
     loc = 1e100
     sidx = 0
