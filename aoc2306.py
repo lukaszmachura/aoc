@@ -12,32 +12,16 @@ print(f"Advent of code 2023, Day {DAY}")
 data = get_data(fname)
 # print(data)
 
-times = [int(x.strip()) for x in data[0].split(':')[1].split()]
+
+times = [int(x) for x in data[0].split(':')[1].split()]
 dist = [int(x) for x in data[1].split(':')[1].split()]
-# print(times, dist)
 
-part = 1
-res = 1
-for it, t in enumerate(times):
-    beat = 0
-    for sec in range(1, t+1):
-        d = sec * (t-sec)  # v = sec
-        if d > dist[it]:
-            beat += 1
-            # print(t, sec, d)
-    res *= beat
-print(f'PART {part}', res)
+p1 = 1
+for t, d in zip(times, dist):
+    p1 *= sum(1 for s in range(1, t+1) if s*(t-s) > d)
+print(f'PART 1', p1)
 
-times = int(data[0].split(':')[1].replace(' ', ''))
-dist = int(data[1].split(':')[1].replace(' ', ''))
-# print(times, dist)
-
-part = 2 
-beat = 0
-for sec in range(1, times+1):
-    d = sec * (times-sec)  # v = sec
-    if d > dist:
-        beat += 1
-        # print(t, sec, d)
-res = beat
-print(f'PART {part}', res)
+t = int(data[0].split(':')[1].replace(' ', ''))
+d = int(data[1].split(':')[1].replace(' ', ''))
+p2 = sum(1 for s in range(1, t) if s*(t-s) > d)
+print(f'PART 2', p2)
