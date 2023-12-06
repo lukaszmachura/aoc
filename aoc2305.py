@@ -57,6 +57,11 @@ def find_destination(source, map):
     return dest
 
 
+def prepare_seeds(seeds):
+    return [(seeds[idx], seeds[idx] + seeds[idx+1]) 
+            for idx in range(0, len(seeds), 2)]
+
+
 fname = f'input23{DAY:02}.aoc'
 print(f"Advent of code 2023, Day {DAY}")
 
@@ -64,13 +69,13 @@ almanac = get_data(fname)
 # print(almanac)
 
 seeds, maps = data_to_maps(almanac)
-# print(seeds, maps)
+stages = ['seed-to-soil', 'soil-to-fertilizer', 
+          'fertilizer-to-water', 'water-to-light', 
+          'light-to-temperature', 'temperature-to-humidity', 
+          'humidity-to-location'] #list(maps.keys())
+
 
 if "1" in PART:
-    stages = ['seed-to-soil', 'soil-to-fertilizer', 
-              'fertilizer-to-water', 'water-to-light', 
-              'light-to-temperature', 'temperature-to-humidity', 
-              'humidity-to-location'] #list(maps.keys())
     loc = []
     for seed in seeds:
         source = seed
@@ -80,42 +85,55 @@ if "1" in PART:
         loc.append(dest)
     print('Part 1: ', min(loc))
 
-
-def prepare_seeds(seeds):
-    new_seeds = ((seeds[0], seeds[1]), )
-    idx = 2
-    while idx < len(seeds):
-        start = seeds[idx]
-        stop = seeds[idx] + seeds[idx+1]
-        for s in new_seeds:
-            a, b = s[0], s[0] + s[1]
-            if a <= start < b:
-                start = b
-            if a <= stop < b:
-                stop = a
-        new_seeds += ((start, stop-start), )
-        idx += 2
-    return new_seeds
-
 if "2" in PART:
-    # print(seeds, prepare_seeds(seeds), sep='\n'); exit()
-    # loc = {}
-    loc = 1e100
-    sidx = 0
-    while 1 and sidx < len(seeds):
-        seed = seeds[sidx]
-        slimit = seeds[sidx] + seeds[sidx+1]
-        while seed < slimit:
-            if seed % 10000 == 0: print((seed - seeds[sidx])/(slimit), end='\r')
-            # if seed not in loc:
-            source = seed
-            for stage in stages:
-                dest = find_destination(source, maps[stage])
-                source = dest
-            # loc[seed] = dest
-            loc = min(loc, dest)
-            seed += 1
-        # break
-        sidx += 2
-    # print('Part 2: ', min(loc.values()))
-    print('Part 2: ', loc)
+    # change seeds from (start, range) into section (start, stop)
+    seeds = prepare_seeds(seeds)
+    for stage in stages:
+        m = maps[stage]
+        newseeds = []
+        while seeds:
+            ss, se = seeds.pop()
+            for dest, src, ran in m:
+                ms, me = src, src + ran
+                os = max(ss, ms)  # overlap start
+                oe = min(se, me)  # overlap end
+                # if seed range overlap map
+                if os < oe:
+                    # overlap tranformation: seed + (dest - src)
+                    newseeds.append((os - src + dest, oe - src + dest))
+                    # left rest of seeds (if exist)
+                    if ss < os:
+                        seeds.append((ss, os))
+                    # right rest of seeds
+                    if oe < se:
+                        seeds.append((oe, se))
+                    break
+            else:
+                newseeds.append((ss, se))
+        seeds = newseeds
+            
+    print('Part 2: ', min(seeds, key=lambda x: x[0])[0]) 
+    # print('Part 2: ', sorted(seeds))
+
+
+
+# --map, **seed
+# ms-------------------------me
+#        ss*********se
+#        os         oe
+
+#               ms-----------------------me
+#        ss***********se
+#               os    oe
+
+# ms-----------------------me
+#                   ss***********se
+#                   os     oe
+
+#                           ms-----------------------me
+#        ss***********se
+#                     os    oe
+
+# ms-----------------------me
+#                              ss***********se
+#                          os  oe
