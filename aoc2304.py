@@ -1,3 +1,4 @@
+import sys, os
 DAY = 4
 
 VERBOSE =  False
@@ -21,7 +22,7 @@ def get_data(fname):
             ret[key] = (win, card)
     return ret
 
-fname = f'input23{DAY:02}.aoc'
+fname = f'aoc23{DAY:02}.in'
 print(f"Advent of code 2023, Day {DAY}")
 
 cards = get_data(fname)

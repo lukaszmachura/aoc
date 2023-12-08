@@ -91,7 +91,7 @@ def gear_ratio(sidx, lineidx, engine):
     ret = beside_nums[0] * beside_nums[1] if len(beside_nums) == 2 else 0
     return ret
 
-fname = f'input23{DAY:02}.aoc'
+fname = f'aoc23{DAY:02}.in'
 print(f"Advent of code 2023, Day {DAY}")
 
 engine = get_data(fname)

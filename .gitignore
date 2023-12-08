@@ -1,5 +1,6 @@
 # AOC input files
 *.aoc
+*.in
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

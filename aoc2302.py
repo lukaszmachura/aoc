@@ -42,7 +42,7 @@ def calculate_game_power(game, bag):
     return power
 
 
-fname = f'input23{DAY:02}.aoc'
+fname = f'aoc23{DAY:02}.in'
 print(f"Advent of code 2023, Day {DAY}")
 
 bag = {'red': 12, 'green': 13, 'blue': 14}

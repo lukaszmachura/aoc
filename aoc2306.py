@@ -1,15 +1,12 @@
+import sys, os
+
 DAY = 6
 VERBOSE =  False
 PART = "12"
-
-def get_data(fname):
-    with open(fname) as f:
-        return f.read().split('\n')
-    
-fname = f'input23{DAY:02}.aoc'
 print(f"Advent of code 2023, Day {DAY}")
 
-data = get_data(fname)
+with open(os.path.basename(sys.argv[0]).replace('py', 'in')) as f:
+    data = f.read().split('\n')
 # print(data)
 
 

@@ -1,10 +1,10 @@
+import sys, os
+
 DAY = 5
 VERBOSE =  False
 PART = "12"
-
-def get_data(fname):
-    with open(fname) as f:
-        return f.read().split('\n')
+with open(os.path.basename(sys.argv[0]).replace('py', 'in')) as f:
+    data = f.read().split('\n')
 
 
 def data_to_maps(data):
@@ -62,10 +62,8 @@ def prepare_seeds(seeds):
             for idx in range(0, len(seeds), 2)]
 
 
-fname = f'input23{DAY:02}.aoc'
 print(f"Advent of code 2023, Day {DAY}")
-
-almanac = get_data(fname)
+almanac = data
 # print(almanac)
 
 seeds, maps = data_to_maps(almanac)

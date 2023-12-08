@@ -47,7 +47,7 @@ def replace_names_with_numbers(s: str, d: dict):
     return s[::-1]
 
 
-fname = f'input23{DAY:02}.aoc'
+fname = f'aoc23{DAY:02}.in'
 print(f"Advent of code 2023, Day {DAY}")
 
 
